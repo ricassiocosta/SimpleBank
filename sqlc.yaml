@@ -1,7 +1,11 @@
 version: "2"
 sql:
   - engine: "postgresql"
-    queries: "./infra/db/sqlc/queries/queries.sql"
+    queries: [
+      "./infra/db/sqlc/queries/account.sql",
+      "./infra/db/sqlc/queries/entry.sql",
+      "./infra/db/sqlc/queries/transfer.sql",
+    ]
     schema: "./infra/db/simple_bank.sql"
     gen:
       go:
