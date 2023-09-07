@@ -1,0 +1,9 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./infra/db/sqlc/queries/queries.sql"
+    schema: "./infra/db/simple_bank.sql"
+    gen:
+      go:
+        package: "sqlc"
+        out: "./infra/db/sqlc"
