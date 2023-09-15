@@ -7,6 +7,8 @@ package sqlc
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 const createTransfer = `-- name: CreateTransfer :one
@@ -21,8 +23,8 @@ RETURNING id, from_account_id, to_account_id, amount, created_at
 `
 
 type CreateTransferParams struct {
-	FromAccountID int64
-	ToAccountID   int64
+	FromAccountID uuid.UUID
+	ToAccountID   uuid.UUID
 	Amount        int64
 }
 
@@ -43,7 +45,7 @@ const deleteTransfer = `-- name: DeleteTransfer :exec
 DELETE FROM transfers WHERE id = $1
 `
 
-func (q *Queries) DeleteTransfer(ctx context.Context, id int32) error {
+func (q *Queries) DeleteTransfer(ctx context.Context, id uuid.UUID) error {
 	_, err := q.db.ExecContext(ctx, deleteTransfer, id)
 	return err
 }
@@ -53,7 +55,7 @@ SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
 WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetTransfer(ctx context.Context, id int32) (Transfer, error) {
+func (q *Queries) GetTransfer(ctx context.Context, id uuid.UUID) (Transfer, error) {
 	row := q.db.QueryRowContext(ctx, getTransfer, id)
 	var i Transfer
 	err := row.Scan(
@@ -76,8 +78,8 @@ OFFSET $4
 `
 
 type ListTransferBetweenAccountsParams struct {
-	FromAccountID int64
-	ToAccountID   int64
+	FromAccountID uuid.UUID
+	ToAccountID   uuid.UUID
 	Limit         int32
 	Offset        int32
 }
@@ -125,7 +127,7 @@ OFFSET $3
 `
 
 type ListTransferFromAccountParams struct {
-	FromAccountID int64
+	FromAccountID uuid.UUID
 	Limit         int32
 	Offset        int32
 }
@@ -168,7 +170,7 @@ OFFSET $3
 `
 
 type ListTransferToAccountParams struct {
-	ToAccountID int64
+	ToAccountID uuid.UUID
 	Limit       int32
 	Offset      int32
 }
@@ -210,7 +212,7 @@ RETURNING id, from_account_id, to_account_id, amount, created_at
 `
 
 type UpdateTransferParams struct {
-	ID     int32
+	ID     uuid.UUID
 	Amount int64
 }
 

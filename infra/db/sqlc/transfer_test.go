@@ -6,11 +6,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/ricassiocosta/simplebank/util"
 	"github.com/stretchr/testify/require"
 )
 
-func createRandomTransfer(t *testing.T, fromAccountID, toAccountID int64) Transfer {
+func createRandomTransfer(t *testing.T, fromAccountID, toAccountID uuid.UUID) Transfer {
 	arg := CreateTransferParams{
 		FromAccountID: fromAccountID,
 		ToAccountID:   toAccountID,

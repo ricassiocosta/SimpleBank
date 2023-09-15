@@ -7,6 +7,8 @@ package sqlc
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 const createEntry = `-- name: CreateEntry :one
@@ -20,7 +22,7 @@ RETURNING id, account_id, amount, created_at
 `
 
 type CreateEntryParams struct {
-	AccountID int64
+	AccountID uuid.UUID
 	Amount    int64
 }
 
@@ -40,7 +42,7 @@ const deleteEntry = `-- name: DeleteEntry :exec
 DELETE FROM entries WHERE id = $1
 `
 
-func (q *Queries) DeleteEntry(ctx context.Context, id int64) error {
+func (q *Queries) DeleteEntry(ctx context.Context, id uuid.UUID) error {
 	_, err := q.db.ExecContext(ctx, deleteEntry, id)
 	return err
 }
@@ -50,7 +52,7 @@ SELECT id, account_id, amount, created_at FROM entries
 WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetEntry(ctx context.Context, id int64) (Entry, error) {
+func (q *Queries) GetEntry(ctx context.Context, id uuid.UUID) (Entry, error) {
 	row := q.db.QueryRowContext(ctx, getEntry, id)
 	var i Entry
 	err := row.Scan(
@@ -71,7 +73,7 @@ OFFSET $3
 `
 
 type ListEntriesParams struct {
-	AccountID int64
+	AccountID uuid.UUID
 	Limit     int32
 	Offset    int32
 }
@@ -112,7 +114,7 @@ RETURNING id, account_id, amount, created_at
 `
 
 type UpdateEntryParams struct {
-	ID     int64
+	ID     uuid.UUID
 	Amount int64
 }
 

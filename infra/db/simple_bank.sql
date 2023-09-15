@@ -1,25 +1,36 @@
-CREATE TABLE "accounts" (
-  "id" serial PRIMARY KEY,
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS "accounts" (
+  "id" uuid DEFAULT uuid_generate_v4 () NOT NULL,
   "owner" varchar NOT NULL,
   "balance" bigint NOT NULL,
   "currency" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE "entries" (
-  "id" serial PRIMARY KEY,
-  "account_id" bigint NOT NULL,
+ALTER TABLE "accounts" 
+ADD PRIMARY KEY ("id");
+
+CREATE TABLE IF NOT EXISTS "entries" (
+  "id" uuid DEFAULT uuid_generate_v4 () NOT NULL,
+  "account_id" uuid NOT NULL,
   "amount" bigint NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE "transfers" (
-  "id" serial PRIMARY KEY,
-  "from_account_id" bigint NOT NULL,
-  "to_account_id" bigint NOT NULL,
+ALTER TABLE "entries" 
+ADD PRIMARY KEY ("id");
+
+CREATE TABLE IF NOT EXISTS "transfers" (
+  "id" uuid DEFAULT uuid_generate_v4 () NOT NULL,
+  "from_account_id" uuid NOT NULL,
+  "to_account_id" uuid NOT NULL,
   "amount" bigint NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
+
+ALTER TABLE "transfers" 
+ADD PRIMARY KEY ("id");
 
 CREATE INDEX ON "accounts" ("owner");
 

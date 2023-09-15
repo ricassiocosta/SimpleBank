@@ -7,6 +7,8 @@ package sqlc
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 const createAccount = `-- name: CreateAccount :one
@@ -43,7 +45,7 @@ const deleteAccount = `-- name: DeleteAccount :exec
 DELETE FROM accounts WHERE id = $1
 `
 
-func (q *Queries) DeleteAccount(ctx context.Context, id int64) error {
+func (q *Queries) DeleteAccount(ctx context.Context, id uuid.UUID) error {
 	_, err := q.db.ExecContext(ctx, deleteAccount, id)
 	return err
 }
@@ -53,8 +55,27 @@ SELECT id, owner, balance, currency, created_at FROM accounts
 WHERE id = $1 LIMIT 1
 `
 
-func (q *Queries) GetAccount(ctx context.Context, id int64) (Account, error) {
+func (q *Queries) GetAccount(ctx context.Context, id uuid.UUID) (Account, error) {
 	row := q.db.QueryRowContext(ctx, getAccount, id)
+	var i Account
+	err := row.Scan(
+		&i.ID,
+		&i.Owner,
+		&i.Balance,
+		&i.Currency,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
+const getAccountForUpdate = `-- name: GetAccountForUpdate :one
+SELECT id, owner, balance, currency, created_at FROM accounts
+WHERE id = $1 LIMIT 1
+FOR UPDATE
+`
+
+func (q *Queries) GetAccountForUpdate(ctx context.Context, id uuid.UUID) (Account, error) {
+	row := q.db.QueryRowContext(ctx, getAccountForUpdate, id)
 	var i Account
 	err := row.Scan(
 		&i.ID,
@@ -115,7 +136,7 @@ RETURNING id, owner, balance, currency, created_at
 `
 
 type UpdateAccountParams struct {
-	ID      int64
+	ID      uuid.UUID
 	Balance int64
 }
 

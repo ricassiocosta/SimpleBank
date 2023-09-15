@@ -6,10 +6,12 @@ package sqlc
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Account struct {
-	ID        int64
+	ID        uuid.UUID
 	Owner     string
 	Balance   int64
 	Currency  string
@@ -17,17 +19,17 @@ type Account struct {
 }
 
 type Entry struct {
-	ID        int64
-	AccountID int64
+	ID        uuid.UUID
+	AccountID uuid.UUID
 	// can be negative or positive
 	Amount    int64
 	CreatedAt time.Time
 }
 
 type Transfer struct {
-	ID            int32
-	FromAccountID int64
-	ToAccountID   int64
+	ID            uuid.UUID
+	FromAccountID uuid.UUID
+	ToAccountID   uuid.UUID
 	// must be positive
 	Amount    int64
 	CreatedAt time.Time
