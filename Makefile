@@ -10,7 +10,13 @@ dropdb:
 sqlc:
 	sqlc generate
 
+migrateup:
+	migrate -path infra/db/migration -database "postgres://root:pgsecret@localhost:5432/simple_bank?sslmode=disable" -verbose up
+
+migratedown:
+	migrate -path infra/db/migration -database "postgres://root:pgsecret@localhost:5432/simple_bank?sslmode=disable" -verbose down
+
 test:
 	go test -v -cover ./...
 
-.PHONY: postgres createdb dropdb sqlc test
+.PHONY: postgres createdb dropdb sqlc migrateup migratedown test
