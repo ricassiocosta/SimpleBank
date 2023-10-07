@@ -14,8 +14,8 @@ jobs:
       postgres:
         image: postgres:12
         env: 
-          POSTGRES_USER: env.POSTGRES_USER
-          POSTGRES_PASSWORD: env.POSTGRES_PASSWORD
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: simple_bank
         options: >-
           --health-cmd pg_isready
@@ -36,8 +36,8 @@ jobs:
     - name: Install golang-migrate
       run:  |
         curl -L https://github.com/golang-migrate/migrate/releases/download/v4.16.2/migrate.linux-amd64.tar.gz | tar xvz
-        sudo mv migrate.linux-amd64 /usr/bin/migrate
-        
+        sudo mv migrate /usr/bin
+
     - name: Run migrations
       run: make migrateup
 
