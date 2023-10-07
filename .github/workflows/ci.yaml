@@ -21,5 +21,8 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
+    - name: Update dependencies
+      run: go mod tidy
+
     - name: Unit Testing
       run: make test
