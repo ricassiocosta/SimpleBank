@@ -8,9 +8,10 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	"github.com/pingcap/log"
 )
 
-var errMissingEnv = errors.New("missing env variables")
+var errMissingEnv = errors.New("failed to load env vars")
 
 // DBConfig holds the database config needed to connect
 type DBConfig struct {
@@ -26,20 +27,14 @@ func loadEnv() error {
 	currentWorkDirectory, _ := os.Getwd()
 	rootPath := projectName.Find([]byte(currentWorkDirectory))
 
-	if err := godotenv.Load(string(rootPath) + `/.env`); err != nil {
-		if err := godotenv.Load(); err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return godotenv.Load(string(rootPath) + `/.env`)
 }
 
 // GetDBConfig returns the database config data
 func GetDBConfig() (*DBConfig, error) {
 	err := loadEnv()
 	if err != nil {
-		return nil, err
+		log.S().Warnf("failed to load envfile: %s", err.Error())
 	}
 
 	dbDriver := os.Getenv("DB_DRIVER")

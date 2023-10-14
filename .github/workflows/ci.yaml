@@ -46,12 +46,5 @@ jobs:
     - name: Update dependencies
       run: go mod tidy
 
-    - name: Create .env file
-      run: |
-        echo "${{ secrets.DB_NAME }}" >> ./.env
-        echo "${{ secrets.DB_DRIVER }}" >> ./.env
-        echo "test" > test.txt
-        cat .env
-
     - name: Unit Testing
       run: make test
