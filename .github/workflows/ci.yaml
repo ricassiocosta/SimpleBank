@@ -55,5 +55,8 @@ jobs:
         echo "${{ secrets.DB_NAME }}" >> .env
         echo "${{ secrets.DB_DRIVER }}" >> .env
 
+    - name: Test .env file
+      run: stat .env
+
     - name: Unit Testing
       run: make test
