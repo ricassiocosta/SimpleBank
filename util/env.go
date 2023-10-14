@@ -18,7 +18,7 @@ type DBConfig struct {
 	DBSource string
 }
 
-const projectDirName = "simple_bank"
+const projectDirName = "simplebank"
 
 // LoadEnv loads the environment variables set on the .env file
 func loadEnv() error {
