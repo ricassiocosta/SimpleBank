@@ -41,7 +41,7 @@ jobs:
         sudo mv migrate /usr/bin
 
     - name: Run migrations
-      run: make migrateup_ci
+      run: migrate -path infra/db/migration -database "${{ secrets.POSTGRES_CONN_URL }}" -verbose up
 
     - name: Update dependencies
       run: go mod tidy

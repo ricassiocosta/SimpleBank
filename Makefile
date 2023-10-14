@@ -10,9 +10,6 @@ dropdb:
 sqlc:
 	sqlc generate
 
-migrateup_ci:
-	migrate -path infra/db/migration -database "${{ secrets.POSTGRES_CONN_URL }}" -verbose up
-
 migrateup:
 	migrate -path infra/db/migration -database "postgres://${DB_USER}:${DB_PASS}@localhost:5432/simple_bank?sslmode=disable" -verbose up
 
