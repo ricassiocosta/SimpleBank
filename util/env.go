@@ -26,9 +26,10 @@ func loadEnv() error {
 	currentWorkDirectory, _ := os.Getwd()
 	rootPath := projectName.Find([]byte(currentWorkDirectory))
 
-	err := godotenv.Load(string(rootPath) + `/.env`)
-	if err != nil {
-		return err
+	if err := godotenv.Load(string(rootPath) + `/.env`); err != nil {
+		if err := godotenv.Load(); err != nil {
+			return err
+		}
 	}
 
 	return nil
