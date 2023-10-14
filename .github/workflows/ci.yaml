@@ -54,9 +54,8 @@ jobs:
         echo "${{ secrets.DB_PORT }}" >> .env
         echo "${{ secrets.DB_NAME }}" >> .env
         echo "${{ secrets.DB_DRIVER }}" >> .env
-
-    - name: Listing dir
-      run: ls
+        ls
+        pwd
 
     - name: Unit Testing
       run: make test
