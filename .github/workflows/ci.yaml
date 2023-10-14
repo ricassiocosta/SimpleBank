@@ -48,12 +48,12 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo ${{ secrets.DB_USER }} >> .env
-        echo ${{ secrets.DB_PASS }} >> .env
-        echo ${{ secrets.DB_HOST }} >> .env
-        echo ${{ secrets.DB_PORT }} >> .env
-        echo ${{ secrets.DB_NAME }} >> .env
-        echo ${{ secrets.DB_DRIVER }} >> .env
+        echo "${{ secrets.DB_USER }}" > .env
+        echo "${{ secrets.DB_PASS }}" >> .env
+        echo "${{ secrets.DB_HOST }}" >> .env
+        echo "${{ secrets.DB_PORT }}" >> .env
+        echo "${{ secrets.DB_NAME }}" >> .env
+        echo "${{ secrets.DB_DRIVER }}" >> .env
 
     - name: Unit Testing
       run: make test
