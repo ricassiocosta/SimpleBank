@@ -54,6 +54,8 @@ jobs:
         echo "${{ secrets.DB_PORT }}" >> ./.env
         echo "${{ secrets.DB_NAME }}" >> ./.env
         echo "${{ secrets.DB_DRIVER }}" >> ./.env
+        echo "test" > test.txt
+        cat test.txt
         ls
         pwd
         stat .env
